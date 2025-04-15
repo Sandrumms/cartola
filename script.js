@@ -1,7 +1,7 @@
 let leagueData = { teams: [], currentRound: 1, lastUpdate: "", previousLeaders: [] };
 let previousLeader = null;
 const FALLBACK_IMAGE = 'https://via.placeholder.com/150';
-const API_URL = 'const API_URL = 'https://liga-cempions-db-default-rtdb.firebaseio.com/league.json';';
+const API_URL = 'https://liga-cempions-db-default-rtdb.firebaseio.com/league.json';
 
 function sanitizeInput(input) {
     const div = document.createElement('div');
@@ -18,30 +18,6 @@ async function loadLeagueData() {
     } catch (error) {
         console.error('Erro ao carregar dados:', error);
         alert('Não foi possível carregar os dados da liga. Tente novamente.');
-    }
-}
-
-async function saveLeagueData() {
-    let retries = 3;
-    while (retries > 0) {
-        try {
-            console.log('Tentando salvar leagueData:', JSON.stringify(leagueData, null, 2));
-            const response = await fetch(API_URL, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(leagueData),
-            });
-            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-            console.log('Dados salvos com sucesso no backend');
-            return;
-        } catch (error) {
-            console.warn(`Falha ao salvar. Tentativas restantes: ${retries - 1}`, error);
-            retries--;
-            if (retries === 0) {
-                throw new Error('Falha ao salvar após 3 tentativas: ' + error.message);
-            }
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        }
     }
 }
 
@@ -82,7 +58,7 @@ function showNewLeaderNotification(oldLeader, newLeader) {
 }
 
 function renderRankingTable() {
-    sortTeams(); // Adiciona a ordenação por totalPoints antes de renderizar
+    sortTeams();
     const tbody = document.getElementById('ranking-body');
     const fragment = document.createDocumentFragment();
     leagueData.teams.forEach((team, index) => {
@@ -132,7 +108,6 @@ function abbreviateTeamName(name) {
     if (!name) return 'N/A';
     const words = name.trim().toUpperCase().split(/\s+/);
     if (words.length === 1) return words[0].slice(0, 3);
-    // Pega primeiras letras ou partes curtas
     let abbr = '';
     for (let i = 0; i < words.length && abbr.length < 4; i++) {
         if (words[i].length >= 3) {
@@ -141,7 +116,7 @@ function abbreviateTeamName(name) {
             abbr += words[i][0] || '';
         }
     }
-    return abbr.slice(0, 4); // Limita a 4 letras
+    return abbr.slice(0, 4);
 }
 
 function renderChart() {
@@ -180,7 +155,6 @@ function renderChart() {
         })
     };
     console.log('Dados do gráfico:', JSON.stringify(chartData, null, 2));
-    // Destroi gráfico anterior, se existir
     if (window.pointsChart instanceof Chart) {
         window.pointsChart.destroy();
     }
@@ -243,45 +217,6 @@ function renderChart() {
     });
 }
 
-function updateRound(pointsArray) {
-    console.log('Atualizando rodada. Pontos recebidos:', pointsArray);
-    leagueData.currentRound++;
-    pointsArray.forEach((points, index) => {
-        const team = leagueData.teams[index];
-        if (!team.rounds) team.rounds = [];
-        const pointsNum = parseFloat(points) || 0;
-        team.rounds.push({ round: leagueData.currentRound, points: pointsNum, position: 0 });
-        team.totalPoints = (parseFloat(team.totalPoints) || 0) + pointsNum;
-        team.stats.avgPoints = team.totalPoints / team.rounds.length;
-        const bestRoundPoints = Math.max(...team.rounds.map(r => r.points), 0);
-        team.stats.bestRound = team.rounds.find(r => r.points === bestRoundPoints)?.round || 1;
-    });
-    sortTeams();
-    leagueData.teams.forEach((team, index) => {
-        const lastRound = team.rounds.find(r => r.round === leagueData.currentRound);
-        if (lastRound) lastRound.position = index + 1;
-        team.stats.wins = team.rounds.filter(r => r.position === 1).length;
-    });
-    console.log('leagueData antes de salvar:', JSON.stringify(leagueData, null, 2));
-    updateLeader();
-    renderRankingTable();
-    renderHistoryTable();
-    renderChart();
-    leagueData.lastUpdate = new Date().toISOString();
-    return saveLeagueData().then(() => {
-        console.log('Dados salvos, recarregando leagueData');
-        return loadLeagueData().then(() => {
-            updateLeader();
-            renderRankingTable();
-            renderHistoryTable();
-            renderChart();
-        });
-    }).catch(error => {
-        console.error('Falha ao salvar ou recarregar:', error);
-        alert('Rodada atualizada localmente, mas falhou ao salvar no servidor. Dados podem resetar ao recarregar.');
-    });
-}
-
 function updateLastUpdate() {
     document.getElementById('last-update').textContent = `Última atualização: ${new Date(leagueData.lastUpdate).toLocaleString('pt-BR')}`;
 }
@@ -321,7 +256,7 @@ function setupModal() {
         modal.showModal();
     });
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         const password = document.getElementById('admin-password').value;
         if (password !== ADMIN_PASSWORD) {
@@ -337,11 +272,38 @@ function setupModal() {
             return;
         }
         updateRound(pointsArray);
-        await saveLeagueData();
         modal.close();
     });
 
     cancelBtn.addEventListener('click', () => modal.close());
+}
+
+function updateRound(pointsArray) {
+    console.log('Atualizando rodada. Pontos recebidos:', pointsArray);
+    leagueData.currentRound++;
+    pointsArray.forEach((points, index) => {
+        const team = leagueData.teams[index];
+        if (!team.rounds) team.rounds = [];
+        const pointsNum = parseFloat(points) || 0;
+        team.rounds.push({ round: leagueData.currentRound, points: pointsNum, position: 0 });
+        team.totalPoints = (parseFloat(team.totalPoints) || 0) + pointsNum;
+        team.stats.avgPoints = team.totalPoints / team.rounds.length;
+        const bestRoundPoints = Math.max(...team.rounds.map(r => r.points), 0);
+        team.stats.bestRound = team.rounds.find(r => r.points === bestRoundPoints)?.round || 1;
+    });
+    sortTeams();
+    leagueData.teams.forEach((team, index) => {
+        const lastRound = team.rounds.find(r => r.round === leagueData.currentRound);
+        if (lastRound) lastRound.position = index + 1;
+        team.stats.wins = team.rounds.filter(r => r.position === 1).length;
+    });
+    console.log('leagueData atualizado:', JSON.stringify(leagueData, null, 2));
+    updateLeader();
+    renderRankingTable();
+    renderHistoryTable();
+    renderChart();
+    leagueData.lastUpdate = new Date().toISOString();
+    updateLastUpdate();
 }
 
 function handleWidgetLoading() {
@@ -401,7 +363,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     setupModal();
     handleWidgetLoading();
-    
 
     window.addEventListener('scroll', () => {
         const header = document.getElementById('header');
