@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cinquentinha - Cempions League 2025 | Acompanhe rodada a rodada, não esqueça de escalar e muito menos de pagar!">
+    <title>Cinquentinha - Cempions League 2025</title>
+    <link rel="icon" href="https://placehold.co/16" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="logo-container">
+            <img src="avatars/file.jpg" alt="Logo da Liga dos Amigos" class="logo-img">
+            <span class="league-title">Liga dos Amigos 2025</span>
+        </div>
+        <nav aria-label="Navegação principal">
+            <a href="#ranking" class="active" aria-current="page"><i class="fas fa-list-ol"></i> Classificação</a>
+            <a href="#history"><i class="fas fa-history"></i> Histórico</a>
+            <a href="#games"><i class="fas fa-futbol"></i> Jogos</a>
+            <a href="#about"><i class="fas fa-info-circle"></i> Sobre</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="leader-highlight animate-fadeIn" id="leader-section" aria-labelledby="leader-title">
+            <h2 id="leader-title" class="sr-only">Líder Atual</h2>
+            <div class="leader-content">
+                <img src="https://placehold.co/150" alt="Escudo do Líder" class="leader-avatar" id="leader-avatar">
+                <div class="leader-info">
+                    <span class="leader-badge"><i class="fas fa-crown"></i> LÍDER ATUAL</span>
+                    <h3 class="leader-name" id="leader-name">Carregando...</h3>
+                    <div class="leader-manager">
+                        <img src="https://placehold.co/30" alt="Avatar do Responsável" class="leader-manager-avatar" id="leader-manager-avatar">
+                        <span id="leader-manager">Responsável: </span>
+                    </div>
+                    <div class="leader-points">
+                        <span id="leader-points">0</span>
+                        <span class="leader-points-label">pontos</span>
+                    </div>
+                    <div class="leader-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="leader-rounds">0</div>
+                            <div class="stat-label">Rodadas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="leader-wins">0</div>
+                            <div class="stat-label">Vitórias</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="leader-avg">0.0</div>
+                            <div class="stat-label">Média</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<section id="round-summary" class="card">
+    <h2 class="section-title">Resumo da Rodada</h2>
+    <p>🏖️🌞👦 Que isso! O time <strong>Club Hala Madri</strong> tá demais com <strong>69.85</strong> pontos, já o <strong>Macondo Búzios Clube</strong> está colado nele com <strong>64.97</strong> pontos. O <strong>Winterball fc</strong> está na terceira colocação com <strong>63.87</strong> e o <strong>Cpx da Colina JG</strong> deu uma melhorada, ficou com <strong>62.92</strong> pontos. Mas os esquadrões <strong>MutantBZ</strong>, <strong>Vascombz</strong> e <strong>Guerreiros da Cem FC</strong> estão precisando pegar umas dicas, hein! 😂</p>
+</section>
+
+        <section class="card animate-fadeIn" id="ranking" aria-labelledby="ranking-title">
+            <h2 class="section-title" id="ranking-title">Classificação Geral</h2>
+            <p id="last-update">Última atualização: Carregando...</p>
+            <div class="controls">
+                <button id="update-round-btn">Atualizar Rodada</button>
+                
+            </div>
+            <div class="table-responsive">
+                <table class="table" id="ranking-table">
+                    <caption class="sr-only">Tabela de Classificação Geral</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Posição</th>
+                            <th scope="col">Nome do Time</th>
+                            <th scope="col">Responsável</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Última Rodada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ranking-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card animate-fadeIn" id="charts" aria-labelledby="charts-title">
+            <h2 class="section-title" id="charts-title">Evolução dos Times</h2>
+            <canvas id="pointsChart"></canvas>
+        </section>
+
+        <section class="card animate-fadeIn" id="history" aria-labelledby="history-title">
+            <h2 class="section-title" id="history-title">Histórico de Pontuação</h2>
+            <div class="table-responsive">
+                <table class="table" id="history-table">
+                    <caption class="sr-only">Tabela de Histórico de Pontuação por Rodada</caption>
+                    <thead>
+                        <tr id="history-header"></tr>
+                    </thead>
+                    <tbody id="history-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card animate-fadeIn" id="games" aria-labelledby="games-title">
+            <h2 class="section-title" id="games-title">Próximos Jogos</h2>
+            <div class="scores-widget" role="region" aria-label="Jogos do Campeonato Brasileiro Série A">
+                <div class="widget-loading" id="widget-loading">
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Carregando jogos...
+                </div>
+                <div data-widget-type="entityScores" data-entity-type="league" data-entity-id="113" data-lang="pt-BR" data-widget-id="d122919d-5ab3-4b7b-9076-b6f32e2b9377" data-theme="dark"></div>
+                <div class="widget-fallback" id="widget-fallback" style="display: none;">
+                    <p>Não foi possível carregar os jogos. <button id="retry-widget" aria-label="Tentar carregar jogos novamente">Tentar novamente</button></p>
+                </div>
+            </div>
+            <div id="powered-by">Powered by <a id="powered-by-link" href="https://www.365scores.com" target="_blank" rel="noopener">Cempions League</a></div>
+        </section>
+
+        <section class="card animate-fadeIn" id="about" aria-labelledby="about-title">
+            <h2 class="section-title" id="about-title">Sobre a Liga</h2>
+            <div class="about-content">
+                <p>A Cempions League 2025 é uma liga baseada no Cartola FC onde cada participante desembolsa cinquentinha, o vencedor leva toda a riqueza. Não vale dar o Cano, o limite máximo para o acerto será a décima rodada do Brasileirão.</p>
+                <p>Acompanhe aqui a classificação, o desempenho dos times e os próximos jogos da rodada.</p>
+                <div class="rules-section">
+                    <h3><i class="fas fa-book" aria-hidden="true"></i> Regras da Competição</h3>
+                    <ul>
+                        <li>Cinquentinha de cada participante!</li>
+                        <li>A Cempions League começou a partir da segunda rodada do Brasileirão.</li>
+                        <li>O time com a maior pontuação acumulada vence.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal para atualização de rodada -->
+    <dialog id="update-round-modal" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <h2 id="modal-title">Atualizar Pontos da Rodada</h2>
+            <form id="update-round-form">
+                <div id="points-inputs"></div>
+                <div class="modal-actions">
+                    <button type="submit">Salvar</button>
+                    <button type="button" id="cancel-modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <div class="new-leader-notification" id="new-leader-notification" role="alert">
+        <div class="notification-icon"><i class="fas fa-trophy" aria-hidden="true"></i></div>
+        <div class="notification-content">
+            <div class="notification-title">NOVO LÍDER NA PARADA!</div>
+            <div class="notification-message" id="notification-message"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-trophy" aria-hidden="true"></i>
+                <span>Cempions League 2025</span>
+            </div>
+            <div class="footer-links">
+                <a href="#ranking">Classificação</a>
+                <a href="#history">Histórico</a>
+                <a href="#games">Jogos</a>
+                <a href="#about">Regras</a>
+            </div>
+            <div class="footer-social">
+                <a href="https://chat.whatsapp.com/I8kvec2xU79FlKUsItrGuw" aria-label="WhatsApp da Liga"><i class="fab fa-whatsapp"></i></a>
+                
+            </div>
+            <div class="footer-copyright">
+                © 2025 Cempions League. A liga Oficial da Cem Braças.
+            </div>
+        </div>
+    </footer>
+
+    <script async src="https://widgets.365scores.com/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

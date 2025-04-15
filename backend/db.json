@@ -1,0 +1,283 @@
+{
+  "league": {
+    "teams": [
+      {
+        "id": 1,
+        "name": "Cpx da Colina JG",
+        "manager": "Leonardo Silva",
+        "managerAvatar": "avatars/leo.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_240/escudo/ac/10/21/001345c142-95d5-4485-8731-fee1ef9975ac20250330161021",
+        "totalPoints": 147.37,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 84.45,
+            "position": 1
+          },
+          {
+            "round": 2,
+            "points": 62.92,
+            "position": 1
+          }
+        ],
+        "stats": {
+          "wins": 2,
+          "avgPoints": 73.685,
+          "bestRound": 1
+        }
+      },
+      {
+        "id": 2,
+        "name": "Winterball fc",
+        "manager": "Vando Bezerra",
+        "managerAvatar": "avatars/vando.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_238/escudo/3e/32/23/007734f077-2370-47b3-8a6a-a110e29b023e20250327113223",
+        "totalPoints": 136.09,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 72.22,
+            "position": 2
+          },
+          {
+            "round": 2,
+            "points": 63.87,
+            "position": 2
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 68.045,
+          "bestRound": 1
+        }
+      },
+      {
+        "id": 4,
+        "name": "Club Hala Madri",
+        "manager": "@Giovane",
+        "managerAvatar": "avatars/giovanne.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_240/escudo/0e/09/14/00a36359b1-6cc1-4abb-bf0a-65196dc3870e20250330180914",
+        "totalPoints": 129.34,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 59.49,
+            "position": 4
+          },
+          {
+            "round": 2,
+            "points": 69.85,
+            "position": 3
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 64.67,
+          "bestRound": 2
+        }
+      },
+      {
+        "id": 3,
+        "name": "GregoreExpulso",
+        "manager": "Fernando Santos",
+        "managerAvatar": "avatars/fernando.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_240/escudo/88/37/27/00e0acbc8c-13bf-4a61-b95f-5c9e7cc4a18820250405123727",
+        "totalPoints": 113.49,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 66.08,
+            "position": 3
+          },
+          {
+            "round": 2,
+            "points": 47.41,
+            "position": 4
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 56.745,
+          "bestRound": 1
+        }
+      },
+      {
+        "id": 9,
+        "name": "Macondo Búzios Clube",
+        "manager": "Sandrum",
+        "managerAvatar": "avatars/sando.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_239/escudo/be/51/32/006ff50432-2854-4016-beea-eb42a82c72be20250329085132",
+        "totalPoints": 105.92,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 40.95,
+            "position": 9
+          },
+          {
+            "round": 2,
+            "points": 64.97,
+            "position": 5
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 52.96,
+          "bestRound": 2
+        }
+      },
+      {
+        "id": 8,
+        "name": "Pórtico de búzios FC",
+        "manager": "Marcelo Silva",
+        "managerAvatar": "avatars/marcelo.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_240/escudo/b0/28/43/00fa03ac49-8781-4002-8f38-157e5b24d6b020250402062843",
+        "totalPoints": 99.68,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 41.13,
+            "position": 8
+          },
+          {
+            "round": 2,
+            "points": 58.55,
+            "position": 6
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 49.84,
+          "bestRound": 2
+        }
+      },
+      {
+        "id": 5,
+        "name": "Guerreiros da Cem FC",
+        "manager": "Diego Santos",
+        "managerAvatar": "avatars/diego.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_239/escudo/34/01/31/005b1e3b24-8421-4397-9b38-6302e7e4723420250329170131",
+        "totalPoints": 98.27,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 59.22,
+            "position": 5
+          },
+          {
+            "round": 2,
+            "points": 39.05,
+            "position": 7
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 49.135,
+          "bestRound": 1
+        }
+      },
+      {
+        "id": 6,
+        "name": "Vascombz",
+        "manager": "Marcelo",
+        "managerAvatar": "avatars/marcelo2.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_204/escudo/ea/59/42/001452fbe7-fc9e-4f7d-87c6-2719d2e3e2ea20220408225942",
+        "totalPoints": 95.1,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 51.18,
+            "position": 6
+          },
+          {
+            "round": 2,
+            "points": 43.92,
+            "position": 8
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 47.55,
+          "bestRound": 1
+        }
+      },
+      {
+        "id": 7,
+        "name": "MutantBZ",
+        "manager": "Magno De Lima Brasil",
+        "managerAvatar": "avatars/magno.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_240/escudo/84/58/09/005d77d7b7-15c9-4fe2-884a-5ebe48d2d08420250402175809",
+        "totalPoints": 86.58,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 41.73,
+            "position": 7
+          },
+          {
+            "round": 2,
+            "points": 44.85,
+            "position": 9
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 43.29,
+          "bestRound": 2
+        }
+      },
+      {
+        "id": 10,
+        "name": "Atlético jardimbz",
+        "manager": "ruanzinhoz",
+        "managerAvatar": "avatars/ruan.jpg",
+        "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_235/escudo/f0/39/34/005e9c2810-e119-400a-b87e-0ab754bc95f020240914153934",
+        "totalPoints": 81.08,
+        "rounds": [
+          {
+            "round": 1,
+            "points": 25.33,
+            "position": 10
+          },
+          {
+            "round": 2,
+            "points": 55.75,
+            "position": 10
+          }
+        ],
+        "stats": {
+          "wins": 0,
+          "avgPoints": 40.54,
+          "bestRound": 2
+        }
+      }
+    ],
+    "currentRound": 2,
+    "lastUpdate": "2025-04-14T16:11:29.584Z",
+    "previousLeaders": [
+      {
+        "team": {
+          "id": 1,
+          "name": "Cpx da Colina JG",
+          "manager": "Leonardo Silva",
+          "managerAvatar": "avatars/leo.jpg",
+          "logo": "https://s3.glbimg.com/v1/AUTH_58d78b787ec34892b5aaa0c7a146155f/cartola_svg_240/escudo/ac/10/21/001345c142-95d5-4485-8731-fee1ef9975ac20250330161021",
+          "totalPoints": 84.45,
+          "rounds": [
+            {
+              "round": 1,
+              "points": 84.45,
+              "position": 1
+            }
+          ],
+          "stats": {
+            "wins": 1,
+            "avgPoints": 84.45,
+            "bestRound": 1
+          }
+        },
+        "untilRound": 1
+      }
+    ]
+  }
+}

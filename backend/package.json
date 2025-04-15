@@ -1,0 +1,15 @@
+{
+  "name": "liga-dos-amigos-backend",
+  "version": "1.0.0",
+  "description": "Backend para Liga dos Amigos 2025",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["liga", "cartola"],
+  "author": "Sandro Paula",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^0.17.4"
+  }
+}
