@@ -1,7 +1,18 @@
 {
   "build": {
     "builder": "NIXPACKS",
-    "rootDir": "backend"
+    "rootDir": "backend",
+    "nixpacksPlan": {
+      "providers": ["node"],
+      "phases": {
+        "setup": {
+          "nixPkgs": ["nodejs_20"]
+        },
+        "build": {
+          "cmd": "npm install"
+        }
+      }
+    }
   },
   "deploy": {
     "startCommand": "cd backend && npm start"
