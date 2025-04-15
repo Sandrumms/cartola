@@ -1,7 +1,7 @@
 let leagueData = { teams: [], currentRound: 1, lastUpdate: "", previousLeaders: [] };
 let previousLeader = null;
 const FALLBACK_IMAGE = 'https://via.placeholder.com/150';
-const API_URL = 'http://localhost:3000/league';
+const API_URL = 'const API_URL = 'https://liga-cempions-db-default-rtdb.firebaseio.com/league.json';';
 
 function sanitizeInput(input) {
     const div = document.createElement('div');
