@@ -6,7 +6,7 @@
       "providers": ["node"],
       "phases": {
         "setup": {
-          "nixPkgs": ["nodejs", "npm"]
+          "nixPkgs": ["nodejs"]
         },
         "build": {
           "cmd": "npm install"
