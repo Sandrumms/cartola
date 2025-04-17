@@ -1,7 +1,8 @@
 let leagueData = { teams: [], currentRound: 1, lastUpdate: "", previousLeaders: [] };
 let previousLeader = null;
 const FALLBACK_IMAGE = 'https://via.placeholder.com/150';
-const API_URL = 'https://liga-cempions-db-default-rtdb.firebaseio.com/league.json';
+const TEAMS_URL = 'https://api.sheety.co/69db349f2a9087927b5c4f915606d4e1/ligaDosAmigos2025/teams'; // Substitua pelo URL do Sheety
+const METADATA_URL = 'https://api.sheety.co/69db349f2a9087927b5c4f915606d4e1/ligaDosAmigos2025/metadata'; // Substitua pelo URL do Sheety
 
 function sanitizeInput(input) {
     const div = document.createElement('div');
@@ -11,10 +12,37 @@ function sanitizeInput(input) {
 
 async function loadLeagueData() {
     try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Erro ao carregar dados');
-        const data = await response.json();
-        Object.assign(leagueData, data);
+        const [teamsResponse, metadataResponse] = await Promise.all([
+            fetch(TEAMS_URL),
+            fetch(METADATA_URL)
+        ]);
+        if (!teamsResponse.ok || !metadataResponse.ok) {
+            throw new Error('Erro ao carregar dados do Google Sheets');
+        }
+        const teamsData = await teamsResponse.json();
+        const metadataData = await metadataResponse.json();
+
+        // Mapear os dados de Teams
+        leagueData.teams = teamsData.teams.map(team => ({
+            id: team.id,
+            name: team.name,
+            manager: team.manager,
+            managerAvatar: team.managerAvatar,
+            logo: team.logo,
+            totalPoints: parseFloat(team.totalPoints) || 0,
+            rounds: JSON.parse(team.rounds || '[]'),
+            stats: {
+                wins: parseInt(team.stats_wins) || 0,
+                avgPoints: parseFloat(team.stats_avgPoints) || 0,
+                bestRound: parseInt(team.stats_bestRound) || 1
+            }
+        }));
+
+        // Mapear os dados de Metadata
+        const metadata = metadataData.metadata[0];
+        leagueData.currentRound = parseInt(metadata.currentRound) || 1;
+        leagueData.lastUpdate = metadata.lastUpdate || new Date().toISOString();
+        leagueData.previousLeaders = JSON.parse(metadata.previousLeaders || '[]');
     } catch (error) {
         console.error('Erro ao carregar dados:', error);
         alert('Não foi possível carregar os dados da liga. Tente novamente.');
