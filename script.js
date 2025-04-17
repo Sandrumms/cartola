@@ -311,49 +311,62 @@ function updateRound(pointsArray) {
     // Adicionar os pontos da nova rodada e atualizar totalPoints
     pointsArray.forEach((points, index) => {
         const team = leagueData.teams[index];
-        if (!team.rounds) team.rounds = [];
+        if (!team || !team.rounds) {
+            console.warn(`Time ${index} inválido ou sem rounds`);
+            return;
+        }
         const pointsNum = parseFloat(points) || 0;
         team.rounds.push({ round: leagueData.currentRound, points: pointsNum, position: 0 });
         team.totalPoints = (parseFloat(team.totalPoints) || 0) + pointsNum;
+        console.log(`Time ${team.name}: totalPoints atualizado para ${team.totalPoints}`);
     });
 
     // Determinar o maior pontuador da rodada atual
     const currentRoundPoints = pointsArray.map((points, index) => ({
         teamIndex: index,
         points: parseFloat(points) || 0
-    }));
+    })).filter(p => leagueData.teams[p.teamIndex]);
+    if (currentRoundPoints.length === 0) {
+        console.warn('Nenhum ponto válido para a rodada atual');
+        return;
+    }
     const maxPoints = Math.max(...currentRoundPoints.map(p => p.points));
     const roundWinners = currentRoundPoints.filter(p => p.points === maxPoints).map(p => p.teamIndex);
+    console.log(`Maior pontuador da rodada ${leagueData.currentRound}: ${maxPoints}, Times: ${roundWinners.map(i => leagueData.teams[i].name).join(', ')}`);
 
-    // Atualizar stats.wins: contar quantas vezes o time foi o maior pontuador em cada rodada
+    // Atualizar stats.wins e avgPoints para todas as rodadas
     leagueData.teams.forEach((team, teamIndex) => {
+        if (!team.rounds) return;
         team.stats.wins = 0; // Resetar vitórias
-        // Para cada rodada, encontrar o maior pontuador
+        const totalRounds = team.rounds.length;
+
         for (let roundNum = 1; roundNum <= leagueData.currentRound; roundNum++) {
-            const roundScores = leagueData.teams.map(t => {
-                const round = t.rounds.find(r => r.round === roundNum);
-                return round ? round.points : 0;
-            });
-            const roundMax = Math.max(...roundScores);
             const roundData = team.rounds.find(r => r.round === roundNum);
-            if (roundData && roundData.points === roundMax) {
-                team.stats.wins++;
+            if (roundData) {
+                const roundScores = leagueData.teams.map(t => {
+                    const r = t.rounds.find(r => r.round === roundNum);
+                    return r ? r.points : 0;
+                });
+                const roundMax = Math.max(...roundScores);
+                if (roundData.points === roundMax) {
+                    team.stats.wins++;
+                    console.log(`Vitória adicionada a ${team.name} na rodada ${roundNum} (${roundData.points} pontos)`);
+                }
             }
         }
 
-        // Atualizar stats.avgPoints
-        const totalRounds = team.rounds.length;
+        // Calcular média corretamente
         team.stats.avgPoints = totalRounds > 0 ? team.totalPoints / totalRounds : 0;
+        console.log(`Média de ${team.name}: ${team.stats.avgPoints.toFixed(2)}`);
 
-        // Atualizar stats.bestRound
-        const bestRoundPoints = Math.max(...team.rounds.map(r => r.points), 0);
+        // Atualizar bestRound
+        const bestRoundPoints = Math.max(...team.rounds.map(r => r.points || 0), 0);
         team.stats.bestRound = team.rounds.find(r => r.points === bestRoundPoints)?.round || 1;
+        console.log(`Melhor rodada de ${team.name}: ${team.stats.bestRound} (${bestRoundPoints} pontos)`);
 
-        // Atualizar posições da rodada atual
+        // Atualizar posição da rodada atual
         const lastRound = team.rounds.find(r => r.round === leagueData.currentRound);
-        if (lastRound) {
-            lastRound.position = 0; // Será recalculado após o sort
-        }
+        if (lastRound) lastRound.position = 0; // Recalculado depois
     });
 
     // Recalcular posições com base no totalPoints
@@ -361,6 +374,7 @@ function updateRound(pointsArray) {
     leagueData.teams.forEach((team, index) => {
         const lastRound = team.rounds.find(r => r.round === leagueData.currentRound);
         if (lastRound) lastRound.position = index + 1;
+        console.log(`Posição de ${team.name}: ${index + 1}º`);
     });
 
     console.log('leagueData atualizado:', JSON.stringify(leagueData, null, 2));
@@ -371,7 +385,6 @@ function updateRound(pointsArray) {
     leagueData.lastUpdate = new Date().toISOString();
     updateLastUpdate();
 }
-
 function handleWidgetLoading() {
     setTimeout(() => {
         const loading = document.getElementById('widget-loading');
