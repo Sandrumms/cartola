@@ -194,6 +194,13 @@ function renderChart() {
         '#e94560', '#0f3460', '#4caf50', '#ff9800', '#9c27b0',
         '#2196f3', '#ffeb3b', '#795548', '#00bcd4', '#f44336'
     ];
+    // Mapear siglas para nomes completos
+    const teamNameMap = {};
+    leagueData.teams.forEach(team => {
+        const abbr = abbreviateTeamName(team.name);
+        teamNameMap[abbr] = team.name;
+    });
+
     const chartData = {
         labels: Array.from({ length: leagueData.currentRound }, (_, i) => `Rodada ${i + 1}`),
         datasets: leagueData.teams.map((team, index) => {
@@ -245,7 +252,12 @@ function renderChart() {
                     titleFont: { size: 12 },
                     bodyFont: { size: 10 },
                     callbacks: {
-                        label: context => `${context.dataset.label}: ${context.raw.toFixed(2)} pontos`
+                        // Mostrar o nome completo do time no tooltip
+                        label: function(context) {
+                            const abbr = context.dataset.label;
+                            const fullName = teamNameMap[abbr] || abbr; // Pega o nome completo
+                            return `${fullName}: ${context.raw.toFixed(2)} pontos`;
+                        }
                     }
                 }
             },
@@ -276,7 +288,6 @@ function renderChart() {
         }
     });
 }
-
 function updateLastUpdate() {
     document.getElementById('last-update').textContent = `Última atualização: ${new Date(leagueData.lastUpdate).toLocaleString('pt-BR')}`;
 }
@@ -497,3 +508,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 });
+
+async function fetchMaisEscalados() {
+      try {
+          // Usar um proxy pra evitar CORS (apenas pra testes)
+          const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+          const targetUrl = 'https://cartolafcmix.com/';
+          const response = await fetch(proxyUrl + targetUrl);
+          const html = await response.text();
+
+          // Parsear o HTML no client-side usando DOMParser
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Pegar a seção de "mais escalados" (ajuste o seletor com base no HTML real)
+          const maisEscalados = doc.querySelectorAll('.mais-escalados'); // Substitua pelo seletor real
+          const escaladosData = Array.from(maisEscalados).map(item => ({
+              jogador: item.querySelector('.jogador-nome')?.textContent || 'N/A',
+              posicao: item.querySelector('.jogador-posicao')?.textContent || 'N/A',
+              escalacoes: item.querySelector('.jogador-escalacoes')?.textContent || '0'
+          }));
+
+          console.log('Mais Escalados:', escaladosData);
+          return escaladosData;
+      } catch (error) {
+          console.error('Erro ao buscar mais escalados:', error);
+          return [];
+      }
+  }
+
+async function renderMaisEscalados() {
+      const escalados = await fetchMaisEscalados();
+      const list = document.getElementById('mais-escalados-list');
+      list.innerHTML = ''; // Limpar a lista
+      escalados.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = `${item.jogador} (${item.posicao}) - Escalado por ${item.escalacoes} cartoleiros`;
+          list.appendChild(li);
+      });
+  }
+
+  // Chamar a função quando a página carregar
+  document.addEventListener('DOMContentLoaded', () => {
+      renderMaisEscalados();
+      // Suas outras funções de inicialização (como loadLeagueData, etc.)
+  });
