@@ -31,11 +31,46 @@ async function loadLeagueData() {
             totalPoints: parseFloat(team.totalPoints) || 0,
             rounds: JSON.parse(team.rounds || '[]'),
             stats: {
-                wins: parseInt(team.stats_wins) || 0,
-                avgPoints: parseFloat(team.stats_avgPoints) || 0,
+                wins: 0, // Será recalculado abaixo
+                avgPoints: 0, // Será recalculado abaixo
                 bestRound: parseInt(team.stats_bestRound) || 1
             }
         }));
+
+        // Recalcular stats.wins e stats.avgPoints com base nos rounds
+        leagueData.teams.forEach(team => {
+            if (!team.rounds || team.rounds.length === 0) return;
+
+            // Calcular totalPoints (pra garantir que não dependa do Sheets)
+            team.totalPoints = team.rounds.reduce((sum, round) => sum + (parseFloat(round.points) || 0), 0);
+
+            // Calcular stats.wins (quantas vezes foi o maior pontuador da rodada)
+            team.stats.wins = 0;
+            for (let roundNum = 1; roundNum <= leagueData.currentRound; roundNum++) {
+                const roundData = team.rounds.find(r => r.round === roundNum);
+                if (roundData) {
+                    const roundScores = leagueData.teams.map(t => {
+                        const r = t.rounds.find(r => r.round === roundNum);
+                        return r ? r.points : 0;
+                    });
+                    const roundMax = Math.max(...roundScores);
+                    if (roundData.points === roundMax) {
+                        team.stats.wins++;
+                        console.log(`Vitória adicionada a ${team.name} na rodada ${roundNum} (${roundData.points} pontos)`);
+                    }
+                }
+            }
+
+            // Calcular stats.avgPoints
+            const totalRounds = team.rounds.length;
+            team.stats.avgPoints = totalRounds > 0 ? team.totalPoints / totalRounds : 0;
+            console.log(`Média de ${team.name}: ${team.stats.avgPoints.toFixed(2)}`);
+
+            // Calcular stats.bestRound
+            const bestRoundPoints = Math.max(...team.rounds.map(r => r.points || 0), 0);
+            team.stats.bestRound = team.rounds.find(r => r.points === bestRoundPoints)?.round || 1;
+            console.log(`Melhor rodada de ${team.name}: ${team.stats.bestRound} (${bestRoundPoints} pontos)`);
+        });
 
         const metadata = metadataData.metadata[0];
         leagueData.currentRound = parseInt(metadata.currentRound) || 1;
@@ -46,7 +81,6 @@ async function loadLeagueData() {
         alert('Não foi possível carregar os dados da liga. Tente novamente.');
     }
 }
-
 function sortTeams() {
     if (!leagueData.teams.length) return;
     leagueData.teams.sort((a, b) => b.totalPoints - a.totalPoints);
